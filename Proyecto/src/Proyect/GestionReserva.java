@@ -34,6 +34,7 @@ public class GestionReserva {
 		boolean modificadoU = false;
 		boolean modificadoA = false;
 		boolean modificadoT = false;
+		boolean modificadoH = false;
 		Empleado em = new Empleado();
 		Reserva r = new Reserva();
 		Usuario u = new Usuario();
@@ -51,22 +52,22 @@ public class GestionReserva {
 			}
 			rs = st.executeQuery("SELECT * FROM reserva");
 			while (rs.next()) {
-				reservas.add(new Reserva(rs.getString("cod_re"), rs.getDate("fecha_ida"), rs.getDate("fecha_vuelta"),
+				reservas.add(new Reserva(rs.getString("cod_re"), rs.getDate("fech_ida"), rs.getDate("fech_vuelta"),
 						rs.getString("dni_usuario"), rs.getString("cod_al"), rs.getString("cod_tra")));
 			}
 			rs = st.executeQuery("SELECT * FROM transporte");
 			while (rs.next()) {
 				transportes.add(new Transporte(rs.getString("cod_tra"), rs.getInt("lleno"), rs.getString("origen"),
-						rs.getString("destino"), rs.getDouble("precio")));
+						rs.getString("destino"), rs.getDouble("precio_tra")));
 			}
 			rs = st.executeQuery("SELECT * FROM hotel");
 			while (rs.next()) {
-				hoteles.add(new Hotel(rs.getString("cod_al"), rs.getString("ubicacion"), rs.getDouble("precio_al"), 
+				hoteles.add(new Hotel(rs.getString("cod_al"), rs.getString("ubicacion"), rs.getDouble("precio_ap"), 
 						rs.getInt("ocupado"), rs.getInt("estrellas")));
 			}
 			rs = st.executeQuery("SELECT * FROM apartamento");
 			while (rs.next()) {
-				apartamentos.add(new Apartamento(rs.getString("cod_al"), rs.getString("ubicacion"), rs.getDouble("precio_al"), 
+				apartamentos.add(new Apartamento(rs.getString("cod_al"), rs.getString("ubicacion"), rs.getDouble("precio_ap"), 
 						rs.getInt("ocupado"), rs.getInt("num_dormitorios")));
 			}
 			st.close();
@@ -176,8 +177,13 @@ public class GestionReserva {
 						añadido2 = true;
 					}
 				}
-				for (int i = 0; i < alojamientos.size(); i++) {
-					if (alojamientos.get(i).getCod_al().equals(r.getCod_al())) {
+				for (int i = 0; i < hoteles.size(); i++) {
+					if (hoteles.get(i).getCod_al().equals(r.getCod_al())) {
+						añadido3 = true;
+					}
+				}
+				for (int i = 0; i < apartamentos.size(); i++) {
+					if (apartamentos.get(i).getCod_al().equals(r.getCod_al())) {
 						añadido3 = true;
 					}
 				}
@@ -206,11 +212,21 @@ public class GestionReserva {
 				modificadoT = true;
 				break;
 			case 4:
-				System.out.println("Hotel: ");
-				h.leer(teclado);
-				if (!alojamientos.contains(t)) {
+				System.out.println("Indica si quiere un hotel o apartamento: ");
+				String nombre = teclado.next();
+				if(nombre.equalsIgnoreCase("hotel")) {
+					h.leer(teclado);
+					if (!hoteles.contains(h)) {
+						hoteles.add(new Hotel(h));
+					}
+					modificadoH = true;
+				} else if ( nombre.equalsIgnoreCase("apartamento")) {
+					a.leer(teclado);
+					if(!apartamentos.contains(a)) {
+						apartamentos.add(new Apartamento(a));
+					}
+					modificadoA = true;
 				}
-				modificadoA = true;
 				break;
 
 			case 5:
@@ -232,7 +248,12 @@ public class GestionReserva {
 				break;
 
 			case 8:
-
+				for (int i = 0; i < hoteles.size(); i++) {
+					System.out.println(hoteles.get(i));
+				}
+				for (int i = 0; i < apartamentos.size(); i++) {
+					System.out.println(apartamentos.get(i));
+				}
 				break;
 			case 9:
 				System.out.println("Introduce el codigo de la reserva que quiere modificar: ");
@@ -276,6 +297,25 @@ public class GestionReserva {
 				modificadoR = true;
 				break;
 			case 14:
+				System.out.println("Introduce el DNI del usuario: ");
+				String dnii = teclado.next();
+				boolean existe = false;
+				for (int i = 0; i < reservas.size(); i++) {
+					if (usuarios.get(i).getDni_usuario().equals(dnii)) {
+						existe = true;
+					}
+				}
+				if(!existe) {
+					System.out.println("Ese DNI no existe");
+				} else {
+					for (int i = 0; i < reservas.size(); i++) {
+						if (reservas.get(i).getDni_usuario().equals(dnii)) {
+							System.out.println(reservas.get(i));
+						}
+					}
+				}
+				modificadoR = true;
+				
 				break;
 
 			case 0:
@@ -330,7 +370,9 @@ public class GestionReserva {
 			try {
 				Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost/agenciadeviajes", "root", "");
 				Statement st = conexion.createStatement();
-				String consulta = "DELETE from reserva;";
+				String consulta = "SET FOREIGN_KEY_CHECKS=0";
+				st.executeUpdate(consulta);
+				consulta = "DELETE from reserva;";
 				st.executeUpdate(consulta);
 				SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -342,9 +384,11 @@ public class GestionReserva {
 					f = simpleDateFormat.format(d);
 					java.sql.Date d2 = java.sql.Date.valueOf(f);
 					consulta = "INSERT INTO reserva VALUES ( '" + reservas.get(cont).getCod_re() + "','" + d1 + "','"
-							+ d2 + "','" + reservas.get(cont).getDni_usuario() + "');";
+							+ d2 + "','" + reservas.get(cont).getDni_usuario() + "','" + reservas.get(cont).getCod_al() + "','" + reservas.get(cont).getCod_tra() + "');";
 					st.executeUpdate(consulta);
 				}
+				consulta = "SET FOREIGN_KEY_CHECKS=1";
+				st.executeUpdate(consulta);
 				st.close();
 				conexion.close();
 			} catch (SQLException e) {
@@ -364,6 +408,45 @@ public class GestionReserva {
 							+ transportes.get(cont).getDestino() + "','" + transportes.get(cont).getPrecio() + "');";
 					st.executeUpdate(consulta);
 				}
+				st.close();
+				conexion.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		if (modificadoH) {
+			try {
+				Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost/agenciadeviajes", "root", "");
+				Statement st = conexion.createStatement();
+				String consulta = "DELETE from hotel;";
+				st.executeUpdate(consulta);
+				for (int cont = 0; cont < hoteles.size(); cont++) {
+					consulta = "INSERT INTO hotel VALUES ( '" + hoteles.get(cont).getCod_al() + "','"
+							+ hoteles.get(cont).getUbicacion() + "','" + hoteles.get(cont).getPrecio_al() + "',"
+							+ hoteles.get(cont).getOcupado() + "," + hoteles.get(cont).getEstrellas() + ");";
+					st.executeUpdate(consulta);
+				}
+				
+				st.close();
+				conexion.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		if (modificadoA) {
+			try {
+				Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost/agenciadeviajes", "root", "");
+				Statement st = conexion.createStatement();
+				String consulta = "DELETE from apartamento;";
+				st.executeUpdate(consulta);
+				for (int cont = 0; cont < hoteles.size(); cont++) {
+					consulta = "INSERT INTO apartamento VALUES ( '" + apartamentos.get(cont).getCod_al() + "','"
+							+ apartamentos.get(cont).getUbicacion() + "','" + apartamentos.get(cont).getPrecio_al() + "',"							+ apartamentos.get(cont).getOcupado() + "," + apartamentos.get(cont).getNum_dormitorios() + ");";
+					st.executeUpdate(consulta);
+				}
+				
 				st.close();
 				conexion.close();
 			} catch (SQLException e) {

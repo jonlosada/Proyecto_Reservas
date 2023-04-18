@@ -67,4 +67,11 @@ public class Hotel extends Alojamiento {
 		System.out.println("Numero de estrellas: ");
 		estrellas = teclado.nextInt();	
 	}
+
+	@Override
+	public String toString() {
+		return super.toString() + "Hotel [estrellas=" + estrellas + "]";
+	}
+	
+	
 }

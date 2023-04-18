@@ -65,6 +65,13 @@ public abstract class Alojamiento {
 	public void setOcupado(int ocupado) {
 		this.ocupado = ocupado;
 	}
+	
+
+	@Override
+	public String toString() {
+		return "Alojamiento [cod_al=" + cod_al + ", ubicacion=" + ubicacion + ", precio_al=" + precio_al + ", ocupado="
+				+ ocupado + "]";
+	}
 
 	public abstract boolean es_apto();
 	public abstract void printCaracteristicas();
