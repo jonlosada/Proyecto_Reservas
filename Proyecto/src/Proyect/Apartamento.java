@@ -41,12 +41,11 @@ public class Apartamento extends Alojamiento implements Facturacion {
 	}
 
 	@Override
-	public void printCaracteristicas() {
-		System.out.println("Codigo Apartamento: " + cod_al );
-		System.out.println("Precio Apartamento: " + precio_al );
-		System.out.println("Ubicacion Apartamento: " + ubicacion );
-		System.out.println("Ocupado: " + ocupado);
-		System.out.println("Num. Dormitorios: " + num_dormitorios);		
+	public String printCaracteristicas() {
+
+		String caracteristicas = cod_al + ubicacion + precio_al + ocupado + num_dormitorios;
+		return caracteristicas;
+
 	}
 
 	@Override

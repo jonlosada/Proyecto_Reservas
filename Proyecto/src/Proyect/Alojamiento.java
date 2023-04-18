@@ -74,6 +74,6 @@ public abstract class Alojamiento {
 	}
 
 	public abstract boolean es_apto();
-	public abstract void printCaracteristicas();
+	public abstract String printCaracteristicas();
 	public abstract void leer(Scanner teclado);
 }

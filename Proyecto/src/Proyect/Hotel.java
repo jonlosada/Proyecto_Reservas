@@ -44,13 +44,10 @@ public class Hotel extends Alojamiento implements Facturacion {
 	}
 
 	@Override
-	public void printCaracteristicas() {
+	public String printCaracteristicas() {
 
-		System.out.println("Codigo Hotel: " + cod_al);
-		System.out.println("Precio Hotel: " + precio_al);
-		System.out.println("Ubicacion Hotel: " + ubicacion);
-		System.out.println("Ocupado: " + ocupado);
-		System.out.println("Num. Estrellas: " + estrellas);
+		String caracteristicas = "" +cod_al + ubicacion + precio_al + ocupado + estrellas + "";
+		return caracteristicas;
 
 	}
 

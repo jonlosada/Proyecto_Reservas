@@ -90,9 +90,7 @@ public class Transporte implements Facturacion  {
 				+ ", precio=" + precio + "]";
 	}
 	
-	public void setTotal ( double t) {
-		precio = t;
-	}
+
 
 	@Override
 	public double setTotal() {
