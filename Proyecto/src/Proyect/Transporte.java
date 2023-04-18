@@ -3,7 +3,7 @@ package Proyect;
 import java.util.Date;
 import java.util.Scanner;
 
-public class Transporte  {
+public class Transporte implements Facturacion  {
 
 	private String cod_tra;
 	private int lleno;
@@ -92,6 +92,12 @@ public class Transporte  {
 	
 	public void setTotal ( double t) {
 		precio = t;
+	}
+
+	@Override
+	public double setTotal() {
+		double tot = precio + precio * IVA;
+		return tot;
 	}
 	
 }

@@ -155,6 +155,10 @@ public class GestionReserva {
 			System.out.println(
 					" --------------------------------------------------------------------------------------------");
 			System.out.println(
+					" 15- Calcular precio total de una reserva                                                    ");
+			System.out.println(
+					" --------------------------------------------------------------------------------------------");
+			System.out.println(
 					" 0- Salir                                                                                   ");
 			System.out.println(
 					"=============================================================================================");
@@ -317,7 +321,42 @@ public class GestionReserva {
 				modificadoR = true;
 				
 				break;
-
+			case 15:
+				System.out.println("Introduce el codigo de la reserva: ");
+				boolean existe2 = false;
+				String codigo = teclado.next();
+				String codigo_al = "";
+				String codigo_tra = "";
+				double precio_total = 0.0;
+				for(int i=0; i<reservas.size(); i++) {
+					if(reservas.get(i).getCod_re().equals(codigo)) {
+						existe2 = true;
+						codigo_al = reservas.get(i).getCod_al();
+						codigo_tra = reservas.get(i).getCod_tra();
+					} 
+				}
+				if(!existe2) {
+					System.out.println("Esa reserva no existe!");
+				} else {
+					for(int i=0; i<hoteles.size(); i++) {
+						if(hoteles.get(i).getCod_al().equals(codigo_al)) {
+							precio_total = precio_total + hoteles.get(i).setTotal();
+						}
+					}
+					for(int i=0; i<apartamentos.size(); i++) {
+						if(apartamentos.get(i).getCod_al().equals(codigo_al)) {
+							precio_total = precio_total + apartamentos.get(i).setTotal();
+						}
+					}
+					for(int i=0; i<transportes.size(); i++) {
+						if(transportes.get(i).getCod_tra().equals(codigo_tra)) {
+							precio_total = precio_total + transportes.get(i).setTotal();
+						}
+					}
+					System.out.println("El precio TOTAL de la reserva es: " + precio_total);
+				}
+				break;
+				
 			case 0:
 				System.out.println("SALIENDO...");
 

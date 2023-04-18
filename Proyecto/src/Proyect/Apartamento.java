@@ -2,7 +2,7 @@ package Proyect;
 
 import java.util.Scanner;
 
-public class Apartamento extends Alojamiento{
+public class Apartamento extends Alojamiento implements Facturacion {
 
 	private int num_dormitorios;
 
@@ -63,6 +63,12 @@ public class Apartamento extends Alojamiento{
 		System.out.println("Numero de dormitorios: ");
 		num_dormitorios = teclado.nextInt();
 		
+	}
+
+	@Override
+	public double setTotal() {
+		double tot = precio_al + precio_al * IVA;
+		return tot;
 	}
 
 

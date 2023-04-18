@@ -2,14 +2,14 @@ package Proyect;
 
 import java.util.Scanner;
 
-public class Hotel extends Alojamiento {
+public class Hotel extends Alojamiento implements Facturacion {
 
 	private int estrellas;
 
 	public Hotel() {
 
 	}
-	
+
 	public Hotel(Hotel h) {
 		this.cod_al = h.cod_al;
 		this.ubicacion = h.ubicacion;
@@ -17,11 +17,12 @@ public class Hotel extends Alojamiento {
 		this.ocupado = h.ocupado;
 		this.estrellas = h.estrellas;
 	}
-	
+
 	public Hotel(String c, String u, double p, int o, int e) {
-		super(c,u,p,o);
+		super(c, u, p, o);
 		this.estrellas = e;
 	}
+
 	/**********************************************/
 
 	public int getEstrellas() {
@@ -44,7 +45,7 @@ public class Hotel extends Alojamiento {
 
 	@Override
 	public void printCaracteristicas() {
-		
+
 		System.out.println("Codigo Hotel: " + cod_al);
 		System.out.println("Precio Hotel: " + precio_al);
 		System.out.println("Ubicacion Hotel: " + ubicacion);
@@ -65,13 +66,17 @@ public class Hotel extends Alojamiento {
 		System.out.println("¿ Esta ocupado ? ");
 		ocupado = teclado.nextInt();
 		System.out.println("Numero de estrellas: ");
-		estrellas = teclado.nextInt();	
+		estrellas = teclado.nextInt();
 	}
 
 	@Override
 	public String toString() {
 		return super.toString() + "Hotel [estrellas=" + estrellas + "]";
 	}
-	
-	
+
+	@Override
+	public double setTotal() {
+		double tot = precio_al + precio_al * IVA;
+		return tot;
+	}
 }
