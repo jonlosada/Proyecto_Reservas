@@ -14,11 +14,18 @@ import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Scanner;
 import java.util.Date;
+import java.util.Scanner;
+import java.util.logging.FileHandler;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import logs.HTMLFormat;
 
 public class GestionReserva {
 
+	private static final Logger LOGGER = Logger.getLogger(GestionReserva.class.getName());
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		Scanner teclado = new Scanner(System.in);
@@ -27,7 +34,6 @@ public class GestionReserva {
 		ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
 		ArrayList<Hotel> hoteles = new ArrayList<Hotel>();
 		ArrayList<Apartamento> apartamentos = new ArrayList<Apartamento>();
-		ArrayList<Alojamiento> alojamientos = new ArrayList<Alojamiento>();
 		ArrayList<Transporte> transportes = new ArrayList<Transporte>();
 		boolean modificadoE = false;
 		boolean modificadoR = false;
@@ -74,6 +80,8 @@ public class GestionReserva {
 			conexion.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+			configurarLog();
+			LOGGER.log(Level.FINE, "Error de conexión");
 			System.out.println("Error de Conexión");
 		}
 
@@ -205,6 +213,8 @@ public class GestionReserva {
 				u.leer(teclado);
 				if (!usuarios.contains(u)) {
 					usuarios.add(new Usuario(u));
+					configurarLog2("Case 2");
+					LOGGER.log(Level.FINE, "Usuario añadido");
 				}
 				modificadoU = true;
 				break;
@@ -492,7 +502,35 @@ public class GestionReserva {
 				e.printStackTrace();
 			}
 		}
+		
+		
 
+	}
+	public static void configurarLog() {
+		LOGGER.setUseParentHandlers(false);
+		Handler fileHandler = null;
+		try {
+			fileHandler = new FileHandler("./logs/ficheroLog.log", true);
+		} catch( IOException e) {
+			e.printStackTrace();
+		}
+		LOGGER.addHandler(fileHandler);
+		fileHandler.setLevel(Level.ALL);
+		LOGGER.setLevel(Level.ALL);
+	}
+	
+	public static void configurarLog2(String nombre) {
+		LOGGER.setUseParentHandlers(false);
+		Handler fileHandler = null;
+		try {
+			fileHandler = new FileHandler("./logs/" + nombre);
+		} catch( IOException e) {
+			e.printStackTrace();
+		}
+		LOGGER.addHandler(fileHandler);
+		fileHandler.setLevel(Level.ALL);
+		fileHandler.setFormatter(new HTMLFormat());
+		LOGGER.setLevel(Level.ALL);
 	}
 
 }
