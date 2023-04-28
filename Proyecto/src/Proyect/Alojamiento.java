@@ -7,7 +7,7 @@ public abstract class Alojamiento {
 	
 	/*********** ATRIBUTOS *****************/
 
-	protected String cod_al;
+	protected int cod_al;
 	protected String ubicacion;
 	protected double precio_al;
 	protected int ocupado;
@@ -18,7 +18,7 @@ public abstract class Alojamiento {
 
 	}
 
-	public Alojamiento(String c, String u, double p, int o) {
+	public Alojamiento(int c, String u, double p, int o) {
 		this.cod_al = c;
 		this.ubicacion = u;
 		this.precio_al = p;
@@ -34,16 +34,18 @@ public abstract class Alojamiento {
 
 	/************* METODOS **************/
 
-	public String getCod_al() {
-		return cod_al;
-	}
-
-	public void setCod_al(String cod_al) {
-		this.cod_al = cod_al;
-	}
+	
 
 	public String getUbicacion() {
 		return ubicacion;
+	}
+
+	public int getCod_al() {
+		return cod_al;
+	}
+
+	public void setCod_al(int cod_al) {
+		this.cod_al = cod_al;
 	}
 
 	public void setUbicacion(String ubicacion) {

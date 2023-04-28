@@ -7,18 +7,18 @@ import java.util.Scanner;;
 
 public class Reserva{
 
-	private String cod_re;
+	private int cod_re;
 	private Date fecha_ida;
 	private Date fecha_vuelta;
 	private String dni_usuario;
-	private String cod_al;
-	private String cod_tra;
+	private int cod_al;
+	private int cod_tra;
 	
 	public Reserva() {
 		
 	}
 	
-	public Reserva( String c, Date fi, Date fv, String d, String ca, String ct) {
+	public Reserva( int c, Date fi, Date fv, String d, int ca, int ct) {
 		this.cod_re = c;
 		this.fecha_ida = fi;
 		this.fecha_vuelta = fv;
@@ -40,37 +40,38 @@ public class Reserva{
 	
 	
 	
-	public String getCod_re() {
+	
+
+	
+
+	@Override
+	public String toString() {
+		return "Reserva [cod_re=" + cod_re + ", fecha_ida=" + fecha_ida + ", fecha_vuelta=" + fecha_vuelta
+				+ ", dni_usuario=" + dni_usuario + ", cod_al=" + cod_al + ", cod_tra=" + cod_tra + "]";
+	}
+
+
+
+	public int getCod_re() {
 		return cod_re;
 	}
-	public String getCod_al() {
-		return cod_al;
-	}
 
-	public void setCod_al(String cod_al) {
-		this.cod_al = cod_al;
-	}
-
-	public String getCod_tra() {
-		return cod_tra;
-	}
-
-	public void setCod_tra(String cod_tra) {
-		this.cod_tra = cod_tra;
-	}
-
-	public void setCod_re(String cod_re) {
+	public void setCod_re(int cod_re) {
 		this.cod_re = cod_re;
 	}
+
 	public Date getFecha_ida() {
 		return fecha_ida;
 	}
+
 	public void setFecha_ida(Date fecha_ida) {
 		this.fecha_ida = fecha_ida;
 	}
+
 	public Date getFecha_vuelta() {
 		return fecha_vuelta;
 	}
+
 	public void setFecha_vuelta(Date fecha_vuelta) {
 		this.fecha_vuelta = fecha_vuelta;
 	}
@@ -83,17 +84,23 @@ public class Reserva{
 		this.dni_usuario = dni_usuario;
 	}
 
-	
+	public int getCod_al() {
+		return cod_al;
+	}
 
-	@Override
-	public String toString() {
-		return "Reserva [cod_re=" + cod_re + ", fecha_ida=" + fecha_ida + ", fecha_vuelta=" + fecha_vuelta
-				+ ", dni_usuario=" + dni_usuario + ", cod_al=" + cod_al + ", cod_tra=" + cod_tra + "]";
+	public void setCod_al(int cod_al) {
+		this.cod_al = cod_al;
+	}
+
+	public int getCod_tra() {
+		return cod_tra;
+	}
+
+	public void setCod_tra(int cod_tra) {
+		this.cod_tra = cod_tra;
 	}
 
 	public void leer( Scanner teclado )  {
-		System.out.println("Codigo: ");
-		cod_re = teclado.next();
 		teclado.nextLine();
 		System.out.println("Fecha_ida: ");
 		try {
@@ -104,9 +111,9 @@ public class Reserva{
 			String f = simpleDateFormat.format(date);
 			java.sql.Date d1 = java.sql.Date.valueOf(f);
 			fecha_ida = d1;
-		} catch (Exception e) {
+		} catch (ParseException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("ERROR, introduce una fecha válida");
 		}
 		System.out.println("Fecha_vuelta: ");
 		try {
@@ -119,14 +126,14 @@ public class Reserva{
 			fecha_vuelta = d1;
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("ERROR, introduce una fecha válida");
 		}
 		System.out.println("DNI_Usuario: ");
 		dni_usuario = teclado.next();
 		System.out.println("Codigo Alojamiento: ");
-		cod_al = teclado.next();
+		cod_al = teclado.nextInt();
 		System.out.println("Codigo Transporte: ");
-		cod_tra = teclado.next();
+		cod_tra = teclado.nextInt();
 	}
 	
 }

@@ -10,7 +10,7 @@ public class Apartamento extends Alojamiento implements Facturacion {
 		
 	}
 	
-	public Apartamento(String c, String u, double p, int o, int n) {
+	public Apartamento(int c, String u, double p, int o, int n) {
 		super(c,u,p,o);
 		this.num_dormitorios = n;
 	}
@@ -50,8 +50,6 @@ public class Apartamento extends Alojamiento implements Facturacion {
 
 	@Override
 	public void leer(Scanner teclado) {
-		System.out.println("Codigo alojamiento: ");
-		cod_al = teclado.next();
 		System.out.println("Ubicacion: ");
 		ubicacion = teclado.next();
 		teclado.nextLine();

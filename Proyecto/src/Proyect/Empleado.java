@@ -1,6 +1,8 @@
 package Proyect;
 
 import java.io.Serializable;
+import java.util.Objects;
+import java.util.Scanner;
 
 public class Empleado implements Serializable{
 
@@ -18,6 +20,13 @@ public class Empleado implements Serializable{
 
 	}
 
+	public Empleado(Empleado e ) {
+		this.nombre = e.nombre;
+		this.apellido1 = e.apellido1;
+		this.apellido2 = e.apellido2;
+		this.email = e.email;
+		this.dni_empleado = e.dni_empleado;
+	}
 	public Empleado(String n, String a1, String a2, String e, String d) {
 		
 		this.nombre = n;
@@ -66,7 +75,46 @@ public class Empleado implements Serializable{
 	public void setDni_empleado(String dni_empleado) {
 		this.dni_empleado = dni_empleado;
 	}
+	
+	@Override
+	public String toString() {
+		return "Empleado [nombre=" + nombre + ", apellido1=" + apellido1 + ", apellido2=" + apellido2 + ", email="
+				+ email + ", dni_empleado=" + dni_empleado + "]";
+	}
+
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(apellido1, apellido2, dni_empleado, email, nombre);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Empleado other = (Empleado) obj;
+		return Objects.equals(apellido1, other.apellido1) && Objects.equals(apellido2, other.apellido2)
+				&& Objects.equals(dni_empleado, other.dni_empleado) && Objects.equals(email, other.email)
+				&& Objects.equals(nombre, other.nombre);
+	}
 
 	/**********************************************/
 
+
+	public void leer(Scanner teclado) {
+		System.out.println("Nombre: ");
+		nombre = teclado.next();
+		System.out.println("Apellido1: ");
+		apellido1 = teclado.next();
+		System.out.println("Apellido2: ");
+		apellido2 = teclado.next();
+		System.out.println("Email: ");
+		email = teclado.next();
+		System.out.println("DNI_empleado: ");
+		dni_empleado = teclado.next();
+	}
 }

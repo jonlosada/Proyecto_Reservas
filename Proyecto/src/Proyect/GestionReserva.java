@@ -58,22 +58,22 @@ public class GestionReserva {
 			}
 			rs = st.executeQuery("SELECT * FROM reserva");
 			while (rs.next()) {
-				reservas.add(new Reserva(rs.getString("cod_re"), rs.getDate("fech_ida"), rs.getDate("fech_vuelta"),
-						rs.getString("dni_usuario"), rs.getString("cod_al"), rs.getString("cod_tra")));
+				reservas.add(new Reserva(rs.getInt("cod_re"), rs.getDate("fech_ida"), rs.getDate("fech_vuelta"),
+						rs.getString("dni_usuario"), rs.getInt("cod_al"), rs.getInt("cod_tra")));
 			}
 			rs = st.executeQuery("SELECT * FROM transporte");
 			while (rs.next()) {
-				transportes.add(new Transporte(rs.getString("cod_tra"), rs.getInt("lleno"), rs.getString("origen"),
-						rs.getString("destino"), rs.getDouble("precio_tra")));
+				transportes.add(new Transporte(rs.getInt("cod_tra"), rs.getInt("lleno"), rs.getString("origen"),
+						rs.getString("destino"), rs.getDouble("precio_tra"), rs.getString("tipo")));
 			}
 			rs = st.executeQuery("SELECT * FROM hotel");
 			while (rs.next()) {
-				hoteles.add(new Hotel(rs.getString("cod_al"), rs.getString("ubicacion"), rs.getDouble("precio_ap"), 
+				hoteles.add(new Hotel(rs.getInt("cod_al"), rs.getString("ubicacion"), rs.getDouble("precio_ap"), 
 						rs.getInt("ocupado"), rs.getInt("estrellas")));
 			}
 			rs = st.executeQuery("SELECT * FROM apartamento");
 			while (rs.next()) {
-				apartamentos.add(new Apartamento(rs.getString("cod_al"), rs.getString("ubicacion"), rs.getDouble("precio_ap"), 
+				apartamentos.add(new Apartamento(rs.getInt("cod_al"), rs.getString("ubicacion"), rs.getDouble("precio_ap"), 
 						rs.getInt("ocupado"), rs.getInt("num_dormitorios")));
 			}
 			st.close();
@@ -133,37 +133,33 @@ public class GestionReserva {
 			System.out.println(
 					" 4- Añadir Alojamiento                                                            		  ");
 			System.out.println(
-					" --------------------------------------------------------------------------------------------");
-			System.out.println(
-					" 5- Listar Reservas                                                                         ");
-			System.out.println(
-					" 6- Listar Usuarios                                                                         ");
-			System.out.println(
-					" 7- Listar Transportes                                                                      ");
-			System.out.println(
-					" 8- Listar Alojamientos                                                                     ");
+					" 5- Añadir Empleado                                                            		  ");
 			System.out.println(
 					" --------------------------------------------------------------------------------------------");
 			System.out.println(
-					" 9-  Modificar Reserva                                                                      ");
+					" 6- Listar Reservas                                                                         ");
 			System.out.println(
-					" 10- Modificar Usuario                                                                      ");
+					" 7- Listar Usuarios                                                                         ");
 			System.out.println(
-					" 11- Modificar Transporte                                                                   ");
+					" 8- Listar Transportes                                                                      ");
 			System.out.println(
-					" 12- Modificar Alojamiento                                                                  ");
-			System.out.println(
-					" --------------------------------------------------------------------------------------------");
-			System.out.println(
-					" 13- Borrar Reserva                                                                         ");
+					" 9- Listar Alojamientos                                                                     ");
 			System.out.println(
 					" --------------------------------------------------------------------------------------------");
 			System.out.println(
-					" 14- Visualizar Reservas de un Usuario                                                      ");
+					" 10-  Modificar Reserva                                                                      ");
 			System.out.println(
 					" --------------------------------------------------------------------------------------------");
 			System.out.println(
-					" 15- Calcular precio total de una reserva                                                    ");
+					" 11- Borrar Reserva                                                                         ");
+			System.out.println(
+					" --------------------------------------------------------------------------------------------");
+			System.out.println(
+					" 12- Visualizar Reservas de un Usuario                                                      ");
+			System.out.println(
+					" --------------------------------------------------------------------------------------------");
+			System.out.println(
+					" 13- Calcular precio total de una reserva                                                    ");
 			System.out.println(
 					" --------------------------------------------------------------------------------------------");
 			System.out.println(
@@ -185,23 +181,23 @@ public class GestionReserva {
 					}
 				}
 				for (int i = 0; i < transportes.size(); i++) {
-					if (transportes.get(i).getCod_tra().equals(r.getCod_tra())) {
+					if (transportes.get(i).getCod_tra() == r.getCod_tra()) {
 						añadido2 = true;
 					}
 				}
 				for (int i = 0; i < hoteles.size(); i++) {
-					if (hoteles.get(i).getCod_al().equals(r.getCod_al())) {
+					if (hoteles.get(i).getCod_al() == r.getCod_al()) {
 						añadido3 = true;
 					}
 				}
 				for (int i = 0; i < apartamentos.size(); i++) {
-					if (apartamentos.get(i).getCod_al().equals(r.getCod_al())) {
+					if (apartamentos.get(i).getCod_al() == r.getCod_al()) {
 						añadido3 = true;
 					}
 				}
 				if (añadido1 && añadido2 && añadido3) {
 					if (!reservas.contains(r)) {
-						reservas.add(new Reserva(r));
+						reservas.add(new Reserva((reservas.size()+1), r.getFecha_ida(),r.getFecha_vuelta(),r.getDni_usuario(), r.getCod_al(), r.getCod_tra()));
 					}
 				} else {
 					System.out.println(
@@ -221,9 +217,12 @@ public class GestionReserva {
 			case 3:
 				t.leer(teclado);
 				if (!transportes.contains(t)) {
-					transportes.add(new Transporte(t));
+					transportes.add(new Transporte((transportes.size()+1),t.getLleno(), t.getOrigen(), t.getDestino(), t.getPrecio(), t.getTipo()));
 				}
 				modificadoT = true;
+				for(int i=0; i<transportes.size(); i++) {
+					System.out.println(transportes.get(i));
+				}
 				break;
 			case 4:
 				System.out.println("Indica si quiere un hotel o apartamento: ");
@@ -244,24 +243,32 @@ public class GestionReserva {
 				break;
 
 			case 5:
+				Empleado em1 = new Empleado();
+				em1.leer(teclado);
+				if (!empleados.contains(em1)) {
+					empleados.add(new Empleado(em1));
+				}
+				modificadoE = true;
+				break;
+			case 6:
 				for (int i = 0; i < reservas.size(); i++) {
 					System.out.println(reservas.get(i));
 				}
 				break;
 
-			case 6:
+			case 7:
 				for (int i = 0; i < usuarios.size(); i++) {
 					System.out.println(usuarios.get(i));
 				}
 				break;
 
-			case 7:
+			case 8:
 				for (int i = 0; i < transportes.size(); i++) {
 					System.out.println(transportes.get(i));
 				}
 				break;
 
-			case 8:
+			case 9:
 				for (int i = 0; i < hoteles.size(); i++) {
 					System.out.println(hoteles.get(i));
 				}
@@ -269,11 +276,11 @@ public class GestionReserva {
 					System.out.println(apartamentos.get(i));
 				}
 				break;
-			case 9:
+			case 10:
 				System.out.println("Introduce el codigo de la reserva que quiere modificar: ");
-				String cod = teclado.next();
+				int cod = teclado.nextInt();
 				for (int i = 0; i < reservas.size(); i++) {
-					if (reservas.get(i).getCod_re().equals(cod)) {
+					if (reservas.get(i).getCod_re() == cod) {
 						System.out.println("Nueva fecha_ida: ");
 						try {
 							Date date = new SimpleDateFormat("yyyy-MM-dd").parse(teclado.next());
@@ -294,23 +301,17 @@ public class GestionReserva {
 				}
 				modificadoR = true;
 				break;
-			case 10:
-				break;
 			case 11:
-				break;
-			case 12:
-				break;
-			case 13:
 				System.out.println("Introduce el codigo de la reserva que quiere borrar: ");
-				cod = teclado.next();
+				cod = teclado.nextInt();
 				for (int i = 0; i < reservas.size(); i++) {
-					if (reservas.get(i).getCod_re().equals(cod)) {
+					if (reservas.get(i).getCod_re() == cod) {
 						reservas.remove(i);
 					}
 				}
 				modificadoR = true;
 				break;
-			case 14:
+			case 12:
 				System.out.println("Introduce el DNI del usuario: ");
 				String dnii = teclado.next();
 				boolean existe = false;
@@ -329,17 +330,16 @@ public class GestionReserva {
 					}
 				}
 				modificadoR = true;
-				
 				break;
-			case 15:
+			case 13:
 				System.out.println("Introduce el codigo de la reserva: ");
 				boolean existe2 = false;
-				String codigo = teclado.next();
-				String codigo_al = "";
-				String codigo_tra = "";
+				int codigo = teclado.nextInt();
+				int codigo_al = 0;
+				int codigo_tra = 0;
 				double precio_total = 0.0;
 				for(int i=0; i<reservas.size(); i++) {
-					if(reservas.get(i).getCod_re().equals(codigo)) {
+					if(reservas.get(i).getCod_re() == codigo) {
 						existe2 = true;
 						codigo_al = reservas.get(i).getCod_al();
 						codigo_tra = reservas.get(i).getCod_tra();
@@ -349,24 +349,23 @@ public class GestionReserva {
 					System.out.println("Esa reserva no existe!");
 				} else {
 					for(int i=0; i<hoteles.size(); i++) {
-						if(hoteles.get(i).getCod_al().equals(codigo_al)) {
+						if(hoteles.get(i).getCod_al() == codigo_al) {
 							precio_total = precio_total + hoteles.get(i).setTotal();
 						}
 					}
 					for(int i=0; i<apartamentos.size(); i++) {
-						if(apartamentos.get(i).getCod_al().equals(codigo_al)) {
+						if(apartamentos.get(i).getCod_al() == codigo_al) {
 							precio_total = precio_total + apartamentos.get(i).setTotal();
 						}
 					}
 					for(int i=0; i<transportes.size(); i++) {
-						if(transportes.get(i).getCod_tra().equals(codigo_tra)) {
+						if(transportes.get(i).getCod_tra() == codigo_tra) {
 							precio_total = precio_total + transportes.get(i).setTotal();
 						}
 					}
 					System.out.println("El precio TOTAL de la reserva es: " + precio_total);
 				}
 				break;
-				
 			case 0:
 				System.out.println("SALIENDO...");
 
@@ -454,7 +453,7 @@ public class GestionReserva {
 				for (int cont = 0; cont < transportes.size(); cont++) {
 					consulta = "INSERT INTO transporte VALUES ( '" + transportes.get(cont).getCod_tra() + "',"
 							+ transportes.get(cont).getLleno() + ",'" + transportes.get(cont).getOrigen() + "','"
-							+ transportes.get(cont).getDestino() + "','" + transportes.get(cont).getPrecio() + "');";
+							+ transportes.get(cont).getDestino() + "','" + transportes.get(cont).getPrecio() + "','" + transportes.get(cont).getTipo() + "');";
 					st.executeUpdate(consulta);
 				}
 				st.close();

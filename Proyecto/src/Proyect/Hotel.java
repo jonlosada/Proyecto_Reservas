@@ -18,7 +18,7 @@ public class Hotel extends Alojamiento implements Facturacion {
 		this.estrellas = h.estrellas;
 	}
 
-	public Hotel(String c, String u, double p, int o, int e) {
+	public Hotel(int c, String u, double p, int o, int e) {
 		super(c, u, p, o);
 		this.estrellas = e;
 	}
@@ -54,7 +54,7 @@ public class Hotel extends Alojamiento implements Facturacion {
 	@Override
 	public void leer(Scanner teclado) {
 		System.out.println("Codigo alojamiento: ");
-		cod_al = teclado.next();
+		cod_al = teclado.nextInt();
 		System.out.println("Ubicacion: ");
 		ubicacion = teclado.next();
 		teclado.nextLine();
