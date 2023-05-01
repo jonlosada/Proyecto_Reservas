@@ -15,6 +15,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.logging.FileHandler;
 import java.util.logging.Handler;
@@ -23,9 +24,16 @@ import java.util.logging.Logger;
 
 import logs.HTMLFormat;
 
+/**
+ * Main
+ * 
+ * @author grupo9
+ *
+ */
 public class GestionReserva {
 
 	private static final Logger LOGGER = Logger.getLogger(GestionReserva.class.getName());
+
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		Scanner teclado = new Scanner(System.in);
@@ -68,13 +76,13 @@ public class GestionReserva {
 			}
 			rs = st.executeQuery("SELECT * FROM hotel");
 			while (rs.next()) {
-				hoteles.add(new Hotel(rs.getInt("cod_al"), rs.getString("ubicacion"), rs.getDouble("precio_ap"), 
+				hoteles.add(new Hotel(rs.getInt("cod_al"), rs.getString("ubicacion"), rs.getDouble("precio_ap"),
 						rs.getInt("ocupado"), rs.getInt("estrellas")));
 			}
 			rs = st.executeQuery("SELECT * FROM apartamento");
 			while (rs.next()) {
-				apartamentos.add(new Apartamento(rs.getInt("cod_al"), rs.getString("ubicacion"), rs.getDouble("precio_ap"), 
-						rs.getInt("ocupado"), rs.getInt("num_dormitorios")));
+				apartamentos.add(new Apartamento(rs.getInt("cod_al"), rs.getString("ubicacion"),
+						rs.getDouble("precio_ap"), rs.getInt("ocupado"), rs.getInt("num_dormitorios")));
 			}
 			st.close();
 			conexion.close();
@@ -119,7 +127,7 @@ public class GestionReserva {
 				System.out.println("Bienvenido!");
 			}
 		}
-		int opcion;
+		int opcion = 0;
 		do {
 
 			System.out.println(
@@ -166,7 +174,20 @@ public class GestionReserva {
 					" 0- Salir                                                                                   ");
 			System.out.println(
 					"=============================================================================================");
-			opcion = teclado.nextInt();
+			
+			boolean valido;
+			do {
+				valido = true;
+				try {
+					opcion = teclado.nextInt();
+					teclado.nextLine();
+				} catch (InputMismatchException e) {
+					System.out.println("Error. Número Incorrecto. Introduce un numero valido: ");
+					valido = false;
+					teclado.nextLine();
+				}
+			} while (valido == false);
+
 
 			switch (opcion) {
 			case 1:
@@ -197,7 +218,10 @@ public class GestionReserva {
 				}
 				if (añadido1 && añadido2 && añadido3) {
 					if (!reservas.contains(r)) {
-						reservas.add(new Reserva((reservas.size()+1), r.getFecha_ida(),r.getFecha_vuelta(),r.getDni_usuario(), r.getCod_al(), r.getCod_tra()));
+						reservas.add(new Reserva((reservas.size() + 1), r.getFecha_ida(), r.getFecha_vuelta(),
+								r.getDni_usuario(), r.getCod_al(), r.getCod_tra()));
+						configurarLog2("Case 1");
+						LOGGER.log(Level.FINE, "Reserva añadida");
 					}
 				} else {
 					System.out.println(
@@ -217,36 +241,39 @@ public class GestionReserva {
 			case 3:
 				t.leer(teclado);
 				if (!transportes.contains(t)) {
-					transportes.add(new Transporte((transportes.size()+1),t.getLleno(), t.getOrigen(), t.getDestino(), t.getPrecio(), t.getTipo()));
+					transportes.add(new Transporte((transportes.size() + 1), t.getLleno(), t.getOrigen(),
+							t.getDestino(), t.getPrecio(), t.getTipo()));
 				}
 				modificadoT = true;
-				for(int i=0; i<transportes.size(); i++) {
-					System.out.println(transportes.get(i));
-				}
 				break;
 			case 4:
 				System.out.println("Indica si quiere un hotel o apartamento: ");
 				String nombre = teclado.next();
-				if(nombre.equalsIgnoreCase("hotel")) {
+				if (nombre.equalsIgnoreCase("hotel")) {
 					h.leer(teclado);
 					if (!hoteles.contains(h)) {
 						hoteles.add(new Hotel(h));
+						configurarLog2("Case 4.1");
+						LOGGER.log(Level.FINE, "Hotel añadido");
 					}
 					modificadoH = true;
-				} else if ( nombre.equalsIgnoreCase("apartamento")) {
+				} else if (nombre.equalsIgnoreCase("apartamento")) {
 					a.leer(teclado);
-					if(!apartamentos.contains(a)) {
+					if (!apartamentos.contains(a)) {
 						apartamentos.add(new Apartamento(a));
+						configurarLog2("Case 4.2");
+						LOGGER.log(Level.FINE, "Apartamento añadido");
 					}
 					modificadoA = true;
 				}
 				break;
-
 			case 5:
 				Empleado em1 = new Empleado();
 				em1.leer(teclado);
 				if (!empleados.contains(em1)) {
 					empleados.add(new Empleado(em1));
+					configurarLog2("Case 5");
+					LOGGER.log(Level.FINE, "Empleado añadido");
 				}
 				modificadoE = true;
 				break;
@@ -307,6 +334,8 @@ public class GestionReserva {
 				for (int i = 0; i < reservas.size(); i++) {
 					if (reservas.get(i).getCod_re() == cod) {
 						reservas.remove(i);
+						configurarLog2("Case 11");
+						LOGGER.log(Level.FINE, "Reserva borrada");
 					}
 				}
 				modificadoR = true;
@@ -320,7 +349,7 @@ public class GestionReserva {
 						existe = true;
 					}
 				}
-				if(!existe) {
+				if (!existe) {
 					System.out.println("Ese DNI no existe");
 				} else {
 					for (int i = 0; i < reservas.size(); i++) {
@@ -338,28 +367,28 @@ public class GestionReserva {
 				int codigo_al = 0;
 				int codigo_tra = 0;
 				double precio_total = 0.0;
-				for(int i=0; i<reservas.size(); i++) {
-					if(reservas.get(i).getCod_re() == codigo) {
+				for (int i = 0; i < reservas.size(); i++) {
+					if (reservas.get(i).getCod_re() == codigo) {
 						existe2 = true;
 						codigo_al = reservas.get(i).getCod_al();
 						codigo_tra = reservas.get(i).getCod_tra();
-					} 
+					}
 				}
-				if(!existe2) {
+				if (!existe2) {
 					System.out.println("Esa reserva no existe!");
 				} else {
-					for(int i=0; i<hoteles.size(); i++) {
-						if(hoteles.get(i).getCod_al() == codigo_al) {
+					for (int i = 0; i < hoteles.size(); i++) {
+						if (hoteles.get(i).getCod_al() == codigo_al) {
 							precio_total = precio_total + hoteles.get(i).setTotal();
 						}
 					}
-					for(int i=0; i<apartamentos.size(); i++) {
-						if(apartamentos.get(i).getCod_al() == codigo_al) {
+					for (int i = 0; i < apartamentos.size(); i++) {
+						if (apartamentos.get(i).getCod_al() == codigo_al) {
 							precio_total = precio_total + apartamentos.get(i).setTotal();
 						}
 					}
-					for(int i=0; i<transportes.size(); i++) {
-						if(transportes.get(i).getCod_tra() == codigo_tra) {
+					for (int i = 0; i < transportes.size(); i++) {
+						if (transportes.get(i).getCod_tra() == codigo_tra) {
 							precio_total = precio_total + transportes.get(i).setTotal();
 						}
 					}
@@ -432,7 +461,8 @@ public class GestionReserva {
 					f = simpleDateFormat.format(d);
 					java.sql.Date d2 = java.sql.Date.valueOf(f);
 					consulta = "INSERT INTO reserva VALUES ( '" + reservas.get(cont).getCod_re() + "','" + d1 + "','"
-							+ d2 + "','" + reservas.get(cont).getDni_usuario() + "','" + reservas.get(cont).getCod_al() + "','" + reservas.get(cont).getCod_tra() + "');";
+							+ d2 + "','" + reservas.get(cont).getDni_usuario() + "','" + reservas.get(cont).getCod_al()
+							+ "','" + reservas.get(cont).getCod_tra() + "');";
 					st.executeUpdate(consulta);
 				}
 				consulta = "SET FOREIGN_KEY_CHECKS=1";
@@ -453,7 +483,8 @@ public class GestionReserva {
 				for (int cont = 0; cont < transportes.size(); cont++) {
 					consulta = "INSERT INTO transporte VALUES ( '" + transportes.get(cont).getCod_tra() + "',"
 							+ transportes.get(cont).getLleno() + ",'" + transportes.get(cont).getOrigen() + "','"
-							+ transportes.get(cont).getDestino() + "','" + transportes.get(cont).getPrecio() + "','" + transportes.get(cont).getTipo() + "');";
+							+ transportes.get(cont).getDestino() + "','" + transportes.get(cont).getPrecio() + "','"
+							+ transportes.get(cont).getTipo() + "');";
 					st.executeUpdate(consulta);
 				}
 				st.close();
@@ -462,7 +493,7 @@ public class GestionReserva {
 				e.printStackTrace();
 			}
 		}
-		
+
 		if (modificadoH) {
 			try {
 				Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost/agenciadeviajes", "root", "");
@@ -475,14 +506,14 @@ public class GestionReserva {
 							+ hoteles.get(cont).getOcupado() + "," + hoteles.get(cont).getEstrellas() + ");";
 					st.executeUpdate(consulta);
 				}
-				
+
 				st.close();
 				conexion.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
-		
+
 		if (modificadoA) {
 			try {
 				Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost/agenciadeviajes", "root", "");
@@ -491,39 +522,40 @@ public class GestionReserva {
 				st.executeUpdate(consulta);
 				for (int cont = 0; cont < hoteles.size(); cont++) {
 					consulta = "INSERT INTO apartamento VALUES ( '" + apartamentos.get(cont).getCod_al() + "','"
-							+ apartamentos.get(cont).getUbicacion() + "','" + apartamentos.get(cont).getPrecio_al() + "',"							+ apartamentos.get(cont).getOcupado() + "," + apartamentos.get(cont).getNum_dormitorios() + ");";
+							+ apartamentos.get(cont).getUbicacion() + "','" + apartamentos.get(cont).getPrecio_al()
+							+ "'," + apartamentos.get(cont).getOcupado() + ","
+							+ apartamentos.get(cont).getNum_dormitorios() + ");";
 					st.executeUpdate(consulta);
 				}
-				
+
 				st.close();
 				conexion.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
-		
-		
 
 	}
+
 	public static void configurarLog() {
 		LOGGER.setUseParentHandlers(false);
 		Handler fileHandler = null;
 		try {
 			fileHandler = new FileHandler("./logs/ficheroLog.log", true);
-		} catch( IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		LOGGER.addHandler(fileHandler);
 		fileHandler.setLevel(Level.ALL);
 		LOGGER.setLevel(Level.ALL);
 	}
-	
+
 	public static void configurarLog2(String nombre) {
 		LOGGER.setUseParentHandlers(false);
 		Handler fileHandler = null;
 		try {
 			fileHandler = new FileHandler("./logs/" + nombre);
-		} catch( IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		LOGGER.addHandler(fileHandler);

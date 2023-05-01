@@ -3,7 +3,13 @@ package Proyect;
 import java.util.Date;
 import java.util.Scanner;
 
-public class Transporte implements Facturacion  {
+/**
+ * Transporte
+ * 
+ * @author grupo9
+ *
+ */
+public class Transporte implements Facturacion {
 
 	private int cod_tra;
 	private int lleno;
@@ -12,12 +18,19 @@ public class Transporte implements Facturacion  {
 	private double precio;
 	private String tipo;
 
-	
+	/**
+	 * Constructor por defecto
+	 */
 	public Transporte() {
-		
+
 	}
-	
-	public Transporte( Transporte t) {
+
+	/**
+	 * Constructor copia
+	 * 
+	 * @param t Nuevo transporte
+	 */
+	public Transporte(Transporte t) {
 		this.cod_tra = t.cod_tra;
 		this.lleno = t.lleno;
 		this.Origen = t.Origen;
@@ -25,8 +38,18 @@ public class Transporte implements Facturacion  {
 		this.precio = t.precio;
 		this.tipo = t.tipo;
 	}
-	
-	public Transporte( int c, int l, String o, String d, double p, String t) {
+
+	/**
+	 * Constructor personalizado
+	 * 
+	 * @param c Codigo_transporte
+	 * @param l lleno
+	 * @param o origen
+	 * @param d destino
+	 * @param p precio
+	 * @param t tipo
+	 */
+	public Transporte(int c, int l, String o, String d, double p, String t) {
 		this.cod_tra = c;
 		this.lleno = l;
 		this.Origen = o;
@@ -34,10 +57,9 @@ public class Transporte implements Facturacion  {
 		this.precio = p;
 		this.tipo = t;
 	}
+
 	/**********************************************/
-	
-	
-	
+
 	public int getLleno() {
 		return lleno;
 	}
@@ -57,16 +79,19 @@ public class Transporte implements Facturacion  {
 	public String getOrigen() {
 		return Origen;
 	}
+
 	public void setOrigen(String origen) {
 		Origen = origen;
 	}
+
 	public String getDestino() {
 		return Destino;
 	}
+
 	public void setDestino(String destino) {
 		Destino = destino;
 	}
-	
+
 	public double getPrecio() {
 		return precio;
 	}
@@ -75,7 +100,6 @@ public class Transporte implements Facturacion  {
 		this.precio = precio;
 	}
 
-	
 	public String getTipo() {
 		return tipo;
 	}
@@ -84,6 +108,11 @@ public class Transporte implements Facturacion  {
 		this.tipo = tipo;
 	}
 
+	/**
+	 * Metodo leer
+	 * 
+	 * @param teclado
+	 */
 	public void leer(Scanner teclado) {
 		System.out.println("¿ Está lleno ?");
 		this.lleno = teclado.nextInt();
@@ -109,5 +138,5 @@ public class Transporte implements Facturacion  {
 		double tot = precio + precio * IVA;
 		return tot;
 	}
-	
+
 }

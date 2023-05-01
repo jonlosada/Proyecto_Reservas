@@ -2,6 +2,12 @@ package Proyect;
 
 import java.util.Scanner;
 
+/**
+ * Usuario
+ * 
+ * @author grupo9
+ *
+ */
 public class Usuario {
 	private String dni_usuario;
 	private String nombre;
@@ -10,10 +16,23 @@ public class Usuario {
 	private String telefono;
 	private String email;
 
-	
+	/**
+	 * Constructor por defecto
+	 */
 	public Usuario() {
-		
+
 	}
+
+	/**
+	 * Constructor personalizado
+	 * 
+	 * @param d  DNI
+	 * @param n  nombre
+	 * @param a1 apellido1
+	 * @param a2 apellido2
+	 * @param t  telefono
+	 * @param e  email
+	 */
 
 	public Usuario(String d, String n, String a1, String a2, String t, String e) {
 		this.dni_usuario = d;
@@ -22,9 +41,14 @@ public class Usuario {
 		this.apellido2 = a2;
 		this.telefono = t;
 		this.email = e;
-		
+
 	}
-	
+
+	/**
+	 * Constructor copia
+	 * 
+	 * @param u Nuevo usuario
+	 */
 	public Usuario(Usuario u) {
 		this.dni_usuario = u.dni_usuario;
 		this.nombre = u.nombre;
@@ -33,8 +57,7 @@ public class Usuario {
 		this.telefono = u.telefono;
 		this.email = u.email;
 	}
-	
-	
+
 	public String getDni_usuario() {
 		return dni_usuario;
 	}
@@ -91,9 +114,12 @@ public class Usuario {
 		this.dni_usuario = dni_empleado;
 	}
 
-	
-	
-	public void leer(Scanner teclado ) {
+	/**
+	 * Metodo leer
+	 * 
+	 * @param teclado
+	 */
+	public void leer(Scanner teclado) {
 		System.out.println("DNI: ");
 		this.dni_usuario = teclado.next();
 		System.out.println("Nombre: ");
@@ -113,7 +139,5 @@ public class Usuario {
 		return "Usuario [dni_usuario=" + dni_usuario + ", nombre=" + nombre + ", apellido1=" + apellido1
 				+ ", apellido2=" + apellido2 + ", telefono=" + telefono + ", email=" + email + "]";
 	}
-	
-	
-	
+
 }

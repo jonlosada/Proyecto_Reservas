@@ -5,7 +5,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;;
 
-public class Reserva{
+/**
+ * Reserva
+ * 
+ * @author grupo9
+ *
+ */
+public class Reserva {
 
 	private int cod_re;
 	private Date fecha_ida;
@@ -13,12 +19,25 @@ public class Reserva{
 	private String dni_usuario;
 	private int cod_al;
 	private int cod_tra;
-	
+
+	/**
+	 * Constructor por defecto
+	 */
 	public Reserva() {
-		
+
 	}
-	
-	public Reserva( int c, Date fi, Date fv, String d, int ca, int ct) {
+
+	/**
+	 * Constructor personalizado
+	 * 
+	 * @param c  Codigo_reserva
+	 * @param fi fecha_ida
+	 * @param fv fecha_vuelta
+	 * @param d  DNI
+	 * @param ca cod_alojamiento
+	 * @param ct cod_transporte
+	 */
+	public Reserva(int c, Date fi, Date fv, String d, int ca, int ct) {
 		this.cod_re = c;
 		this.fecha_ida = fi;
 		this.fecha_vuelta = fv;
@@ -26,7 +45,12 @@ public class Reserva{
 		this.cod_al = ca;
 		this.cod_tra = ct;
 	}
-	
+
+	/**
+	 * Consctructor copia
+	 * 
+	 * @param r Nueva Reserva
+	 */
 	public Reserva(Reserva r) {
 		this.cod_re = r.cod_re;
 		this.fecha_ida = r.fecha_ida;
@@ -35,22 +59,14 @@ public class Reserva{
 		this.cod_al = r.cod_al;
 		this.cod_tra = r.cod_tra;
 	}
-	
-	/**********************************************/
-	
-	
-	
-	
 
-	
+	/*********** GETTERS/SETTERS ***************/
 
 	@Override
 	public String toString() {
 		return "Reserva [cod_re=" + cod_re + ", fecha_ida=" + fecha_ida + ", fecha_vuelta=" + fecha_vuelta
 				+ ", dni_usuario=" + dni_usuario + ", cod_al=" + cod_al + ", cod_tra=" + cod_tra + "]";
 	}
-
-
 
 	public int getCod_re() {
 		return cod_re;
@@ -100,8 +116,12 @@ public class Reserva{
 		this.cod_tra = cod_tra;
 	}
 
-	public void leer( Scanner teclado )  {
-		teclado.nextLine();
+	/**
+	 * Metodo leer
+	 * 
+	 * @param teclado
+	 */
+	public void leer(Scanner teclado) {
 		System.out.println("Fecha_ida: ");
 		try {
 			String fecha = teclado.nextLine();
@@ -135,5 +155,5 @@ public class Reserva{
 		System.out.println("Codigo Transporte: ");
 		cod_tra = teclado.nextInt();
 	}
-	
+
 }

@@ -4,11 +4,14 @@ import java.io.Serializable;
 import java.util.Objects;
 import java.util.Scanner;
 
-public class Empleado implements Serializable{
+/**
+ * Empleado
+ * 
+ * @author grupo9
+ *
+ */
+public class Empleado implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private String nombre;
 	private String apellido1;
@@ -16,25 +19,46 @@ public class Empleado implements Serializable{
 	private String email;
 	private String dni_empleado;
 
+	/**
+	 * Constructor por defecto
+	 */
+
 	public Empleado() {
 
 	}
 
-	public Empleado(Empleado e ) {
+	/**
+	 * Constructor copia
+	 * 
+	 * @param e Empleado nuevo
+	 */
+	public Empleado(Empleado e) {
 		this.nombre = e.nombre;
 		this.apellido1 = e.apellido1;
 		this.apellido2 = e.apellido2;
 		this.email = e.email;
 		this.dni_empleado = e.dni_empleado;
 	}
+
+	/**
+	 * Constructor personalizado
+	 * 
+	 * @param n  Nombre
+	 * @param a1 Apellido1
+	 * @param a2 Apellido2
+	 * @param e  Email
+	 * @param d  DNI
+	 */
 	public Empleado(String n, String a1, String a2, String e, String d) {
-		
+
 		this.nombre = n;
 		this.apellido1 = a1;
 		this.apellido2 = a2;
 		this.email = e;
 		this.dni_empleado = d;
 	}
+
+	/** GETTERS/SETTERS **/
 
 	public String getNombre() {
 		return nombre;
@@ -75,14 +99,13 @@ public class Empleado implements Serializable{
 	public void setDni_empleado(String dni_empleado) {
 		this.dni_empleado = dni_empleado;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Empleado [nombre=" + nombre + ", apellido1=" + apellido1 + ", apellido2=" + apellido2 + ", email="
 				+ email + ", dni_empleado=" + dni_empleado + "]";
 	}
 
-	
 	@Override
 	public int hashCode() {
 		return Objects.hash(apellido1, apellido2, dni_empleado, email, nombre);
@@ -104,7 +127,11 @@ public class Empleado implements Serializable{
 
 	/**********************************************/
 
-
+	/**
+	 * Metodo leer
+	 * 
+	 * @param teclado
+	 */
 	public void leer(Scanner teclado) {
 		System.out.println("Nombre: ");
 		nombre = teclado.next();
