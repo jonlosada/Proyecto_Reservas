@@ -174,7 +174,7 @@ public class GestionReserva {
 					" 0- Salir                                                                                   ");
 			System.out.println(
 					"=============================================================================================");
-			
+
 			boolean valido;
 			do {
 				valido = true;
@@ -187,7 +187,6 @@ public class GestionReserva {
 					teclado.nextLine();
 				}
 			} while (valido == false);
-
 
 			switch (opcion) {
 			case 1:
@@ -345,7 +344,7 @@ public class GestionReserva {
 				String dnii = teclado.next();
 				boolean existe = false;
 				for (int i = 0; i < reservas.size(); i++) {
-					if (usuarios.get(i).getDni_usuario().equals(dnii)) {
+					if (reservas.get(i).getDni_usuario().equals(dnii)) {
 						existe = true;
 					}
 				}

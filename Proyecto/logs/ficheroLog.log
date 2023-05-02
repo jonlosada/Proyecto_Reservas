@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2023-04-21T08:38:38.316101800Z</date>
+  <millis>1682066318316</millis>
+  <nanos>101800</nanos>
+  <sequence>0</sequence>
+  <logger>Proyect.GestionReserva</logger>
+  <level>FINE</level>
+  <class>Proyect.GestionReserva</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>Error de conexión</message>
+</record>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2023-04-28T07:52:29.558652100Z</date>
+  <millis>1682668349558</millis>
+  <nanos>652100</nanos>
+  <sequence>0</sequence>
+  <logger>Proyect.GestionReserva</logger>
+  <level>FINE</level>
+  <class>Proyect.GestionReserva</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>Error de conexión</message>
+</record>
