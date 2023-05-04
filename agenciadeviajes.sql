@@ -64,12 +64,12 @@ email VARCHAR(50)
 );
 
 create table antiguos_datos_eliminados(
-dni VARCHAR(9) PRIMARY key,
-nombre VARCHAR(20),
-apellido1 VARCHAR(50),
-apellido2 VARCHAR(50),
-telefono VARCHAR(9),
-email VARCHAR(50)
+cod_re int PRIMARY KEY,
+fech_ida date, 
+fech_vuelta date,
+dni_usuario VARCHAR(9),
+cod_al int,
+cod_tra int
 );
 
 
