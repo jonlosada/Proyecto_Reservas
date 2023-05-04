@@ -73,4 +73,11 @@ cod_tra int
 );
 
 
+--//////////////////LOS INSERT////////////////////////--
+
+insert into usuario values("98976013Ñ","iker","santos","blanco","789956732","iker@gmail.com");
+insert into apartamento values(23,"Sevilla","100",true);
+insert into usuario values("98976790K","Pablo","garcia","vazquez","688895789","pablo@gmail.com");
+
+
 
