@@ -33,6 +33,8 @@ import logs.HTMLFormat;
 public class GestionReserva {
 
 	private static final Logger LOGGER = Logger.getLogger(GestionReserva.class.getName());
+	private static final Logger LOGGER2 = Logger.getLogger(GestionReserva.class.getName());
+	
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -232,8 +234,8 @@ public class GestionReserva {
 				u.leer(teclado);
 				if (!usuarios.contains(u)) {
 					usuarios.add(new Usuario(u));
-					configurarLog2("Case 2");
-					LOGGER.log(Level.FINE, "Usuario añadido");
+					//configurarLog2("Case 2");
+					LOGGER.log(Level.FINE, "Case 2:Usuario añadido");
 				}
 				modificadoU = true;
 				break;
@@ -252,16 +254,16 @@ public class GestionReserva {
 					h.leer(teclado);
 					if (!hoteles.contains(h)) {
 						hoteles.add(new Hotel(h));
-						configurarLog2("Case 4.1");
-						LOGGER.log(Level.FINE, "Hotel añadido");
+						//configurarLog2("Case 4.1");
+						LOGGER.log(Level.FINE, "Case 4.1: Hotel añadido");
 					}
 					modificadoH = true;
 				} else if (nombre.equalsIgnoreCase("apartamento")) {
 					a.leer(teclado);
 					if (!apartamentos.contains(a)) {
 						apartamentos.add(new Apartamento(a));
-						configurarLog2("Case 4.2");
-						LOGGER.log(Level.FINE, "Apartamento añadido");
+						//configurarLog2("Case 4.2");
+						LOGGER.log(Level.FINE, "Case 4.2:Apartamento añadido");
 					}
 					modificadoA = true;
 				}
@@ -271,8 +273,8 @@ public class GestionReserva {
 				em1.leer(teclado);
 				if (!empleados.contains(em1)) {
 					empleados.add(new Empleado(em1));
-					configurarLog2("Case 5");
-					LOGGER.log(Level.FINE, "Empleado añadido");
+					//configurarLog2("Case 5");
+					LOGGER.log(Level.FINE, "Case 5:Empleado añadido");
 				}
 				modificadoE = true;
 				break;
@@ -333,8 +335,8 @@ public class GestionReserva {
 				for (int i = 0; i < reservas.size(); i++) {
 					if (reservas.get(i).getCod_re() == cod) {
 						reservas.remove(i);
-						configurarLog2("Case 11");
-						LOGGER.log(Level.FINE, "Reserva borrada");
+						//configurarLog2("Case 11");
+						LOGGER.log(Level.FINE, "Case 11:Reserva borrada");
 					}
 				}
 				modificadoR = true;
@@ -535,6 +537,7 @@ public class GestionReserva {
 		}
 
 	}
+	
 
 	public static void configurarLog() {
 		LOGGER.setUseParentHandlers(false);
@@ -550,7 +553,7 @@ public class GestionReserva {
 	}
 
 	public static void configurarLog2(String nombre) {
-		LOGGER.setUseParentHandlers(false);
+		LOGGER2.setUseParentHandlers(false);
 		Handler fileHandler = null;
 		try {
 			fileHandler = new FileHandler("./logs/" + nombre);
