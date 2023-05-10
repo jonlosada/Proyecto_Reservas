@@ -25,7 +25,7 @@ import java.util.logging.Logger;
 import logs.HTMLFormat;
 
 /**
- * Main
+ * Main para gestionar las reservas,para poder eliminar,modifiacar o añadir 
  * 
  * @author grupo9
  *
@@ -221,8 +221,8 @@ public class GestionReserva {
 					if (!reservas.contains(r)) {
 						reservas.add(new Reserva((reservas.size() + 1), r.getFecha_ida(), r.getFecha_vuelta(),
 								r.getDni_usuario(), r.getCod_al(), r.getCod_tra()));
-						configurarLog2("Case 1");
-						LOGGER.log(Level.FINE, "Reserva añadida");
+						//configurarLog2("Case 1");
+						LOGGER.log(Level.FINE, "Case 1:Reserva añadida");
 					}
 				} else {
 					System.out.println(
