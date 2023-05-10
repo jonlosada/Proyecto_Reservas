@@ -33,7 +33,7 @@ import logs.HTMLFormat;
 public class GestionReserva {
 
 	private static final Logger LOGGER = Logger.getLogger(GestionReserva.class.getName());
-	private static final Logger LOGGER2 = Logger.getLogger(GestionReserva.class.getName());
+	private static final Logger LOGGER2 = Logger.getLogger(GestionReserva.class.getName(),"2");
 	
 
 	public static void main(String[] args) {
